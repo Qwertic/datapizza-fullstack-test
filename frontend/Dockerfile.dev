@@ -1,0 +1,21 @@
+FROM oven/bun:1.2.4
+
+WORKDIR /app
+
+# Copy package.json and bun.lock first
+COPY package.json bun.lock* ./
+
+# Install dependencies with verbose output to debug
+RUN bun install --verbose
+
+# Copy the rest of the application
+COPY . .
+
+# Expose both the Vite dev server port and the Nginx port
+EXPOSE 5173 80
+
+# Double check that framer-motion is installed
+RUN bun install framer-motion --verbose
+
+# Start the Vite dev server
+CMD ["bun", "run", "dev", "--host", "0.0.0.0"] 

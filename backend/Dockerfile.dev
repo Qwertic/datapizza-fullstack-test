@@ -1,0 +1,15 @@
+FROM python:3.13-slim
+
+WORKDIR /app
+
+# Copy only requirements first to leverage Docker cache
+COPY pyproject.toml .
+
+# Install dependencies with development extras
+RUN pip install -e ".[dev]"
+
+# Expose API port
+EXPOSE 8000
+
+# Use a development-specific command that enables auto-reload
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"] 
