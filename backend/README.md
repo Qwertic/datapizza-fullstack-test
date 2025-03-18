@@ -33,3 +33,62 @@ The backend is structured as follows:
 ## Running the Backend
 
 To run the backend, you can use the provided Docker setup. Please refer to the Docker Setup section in the main README for more details.
+
+## Testing
+
+The backend includes a comprehensive test suite that verifies the functionality of the API endpoints.
+
+### Setting up the test environment
+
+1. Install the test dependencies:
+
+```bash
+# With pip
+pip install -e ".[dev]"
+
+# With uv
+uv pip install -e ".[dev]"
+```
+
+### Running the tests
+
+You can run the tests using pytest:
+
+```bash
+# Run all tests with verbose output
+pytest -v
+
+# Run a specific test file
+pytest tests/test_generate_endpoint.py -v
+
+# Run a specific test
+pytest tests/test_generate_endpoint.py::TestGenerateEndpoint::test_generate_response_success -v
+```
+
+Or use the provided test script:
+
+```bash
+# Run all tests using the script
+./tests/run_tests.py
+```
+
+### Test Coverage
+
+The test suite covers:
+
+1. **API Endpoints**:
+
+   - `/generate` endpoint for text generation (both regular and streaming)
+   - `/documents` endpoint for document retrieval
+
+2. **Error Handling**:
+
+   - Missing query parameters
+   - Invalid endpoints
+   - Improper HTTP methods
+   - Invalid JSON payloads
+
+3. **Caching**:
+   - Response caching functionality
+   - Cache performance improvements
+   - Cache persistence
