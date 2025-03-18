@@ -13,13 +13,11 @@ def client():
         yield test_client
 
 @pytest.fixture
-async def async_client():
-    """Return an async test client for the app."""
-    transport = ASGITransport(app=app)
-    async with AsyncClient(transport=transport, base_url="http://test") as ac:
-        yield ac
+def base_url():
+    """Return the base URL for async client connections."""
+    return "http://test"
 
-@pytest.fixture(scope="session")
+@pytest.fixture
 def event_loop():
     """Create an instance of the default event loop for each test case."""
     loop = asyncio.get_event_loop_policy().new_event_loop()

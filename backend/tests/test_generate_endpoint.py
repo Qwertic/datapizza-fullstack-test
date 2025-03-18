@@ -2,7 +2,8 @@ import pytest
 from fastapi import status
 from fastapi.testclient import TestClient
 import json
-from httpx import AsyncClient
+from httpx import AsyncClient, ASGITransport
+from app.main import app
 
 class TestGenerateEndpoint:
     def test_generate_response_success(self, client: TestClient):
@@ -54,33 +55,37 @@ class TestGenerateEndpoint:
         assert data1["response"] == data2["response"]
         
     @pytest.mark.asyncio
-    async def test_generate_streaming_response(self, async_client: AsyncClient):
+    async def test_generate_streaming_response(self, base_url):
         """Test that streaming responses work correctly."""
-        response = await async_client.post(
-            "/generate", 
-            json={"query": "Tell me about DataPizza"}, 
-            params={"stream": True}
-        )
+        # Create a transport and client for this test
+        transport = ASGITransport(app=app)
         
-        assert response.status_code == status.HTTP_200_OK
-        # Check that the content type starts with "text/event-stream"
-        assert response.headers["content-type"].startswith("text/event-stream")
-        
-        # Get the content and verify it contains proper SSE format
-        content = response.content.decode("utf-8")
-        assert content.startswith("data: ")
-        
-        # Verify at least one complete chunk is present
-        lines = content.split("\n\n")
-        assert len(lines) > 0
-        
-        # Parse the first chunk
-        first_chunk = lines[0].replace("data: ", "")
-        chunk_data = json.loads(first_chunk)
-        
-        # Verify chunk structure
-        assert "delta" in chunk_data
-        assert "text" in chunk_data
-        
-        # Check for the final done message
-        assert any("done" in line for line in lines if line) 
+        async with AsyncClient(transport=transport, base_url=base_url) as client:
+            response = await client.post(
+                "/generate", 
+                json={"query": "Tell me about DataPizza"}, 
+                params={"stream": True}
+            )
+            
+            assert response.status_code == status.HTTP_200_OK
+            # Check that the content type starts with "text/event-stream"
+            assert response.headers["content-type"].startswith("text/event-stream")
+            
+            # Get the content and verify it contains proper SSE format
+            content = response.content.decode("utf-8")
+            assert content.startswith("data: ")
+            
+            # Verify at least one complete chunk is present
+            lines = content.split("\n\n")
+            assert len(lines) > 0
+            
+            # Parse the first chunk
+            first_chunk = lines[0].replace("data: ", "")
+            chunk_data = json.loads(first_chunk)
+            
+            # Verify chunk structure
+            assert "delta" in chunk_data
+            assert "text" in chunk_data
+            
+            # Check for the final done message
+            assert any("done" in line for line in lines if line) 
