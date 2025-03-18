@@ -9,6 +9,7 @@ The frontend application is built using React, TypeScript, and Tailwind CSS. It 
 - **Styling:** Tailwind CSS
 - **Build Tool:** Vite
 - **Development Server:** Bun with Vite for hot module replacement
+- **Testing:** Bun's built-in test runner
 
 ## Key Features
 
@@ -23,6 +24,16 @@ The frontend application is built using React, TypeScript, and Tailwind CSS. It 
 - **Production Environment:** The application can be run in production mode using `docker compose -f docker-compose.prod.yml up -d --build`. This will build and start the frontend and backend services in optimized configurations.
 - **Frontend URL:** The frontend application is accessible at `http://localhost:5173` in development mode and `http://localhost:80` in production mode.
 - **Backend API URL:** The backend API is accessible at `http://localhost:8000` in both development and production modes.
+
+## Testing
+
+The frontend includes tests to ensure the reliability of critical components:
+
+- **Running Tests:** Execute `bun test` or `npm test` to run all tests.
+- **Test Coverage:** Tests focus on critical parts of the application, such as the API client and query handling.
+- **Test Directory:** All tests are located in the `tests/` directory with a structure that mirrors the source code.
+
+For more information about testing, see the [tests/README.md](./tests/README.md) file.
 
 ## Useful Information
 
