@@ -10,6 +10,14 @@ repos:
   # Frontend hooks
   - repo: local
     hooks:
+      - id: frontend-typescript-check
+        name: Frontend TypeScript Check
+        entry: bash -c 'cd frontend && bun run tsc --noEmit'
+        language: system
+        files: ^frontend/.*\.(ts|tsx)$
+        pass_filenames: false
+        stages: [commit]
+
       - id: frontend-test
         name: Frontend Tests
         entry: bash -c 'cd frontend && bun test'

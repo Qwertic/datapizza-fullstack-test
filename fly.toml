@@ -1,20 +1,68 @@
-# fly.toml app configuration file generated for datapizza-fullstack-test on 2025-03-18T21:05:56+01:00
+# fly.toml app configuration file generated for datapizza-fullstack on 2024-05-10T12:30:27-05:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'datapizza-fullstack-test'
-primary_region = 'lhr'
+app = "datapizza-fullstack-test"
+primary_region = "sjc"
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8080"
+  PRIMARY_REGION = "sjc"
 
 [http_service]
-  internal_port = 8080
+  internal_port = 80
   force_https = true
-  auto_stop_machines = 'stop'
+  auto_stop_machines = "stop"
   auto_start_machines = true
   min_machines_running = 0
-  processes = ['app']
+  processes = ["app"]
+
+  [http_service.concurrency]
+    type = "connections"
+    hard_limit = 1000
+    soft_limit = 500
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/"
+    protocol = "http"
+
+  [http_service.cors]
+    allowed_origins = ["https://datapizza-fullstack-test.fly.dev"]
+    allowed_methods = ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    allowed_headers = ["Content-Type", "Authorization"]
+    exposed_headers = ["Content-Length", "Content-Type"]
+    max_age = "86400"
+
+[[services]]
+  protocol = "tcp"
+  internal_port = 8000
+  processes = ["app"]
+
+  [[services.ports]]
+    port = 8000
+    handlers = ["http"]
+
+  [[services.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/"
+    protocol = "http"
 
 [[vm]]
-  memory = '1gb'
-  cpu_kind = 'shared'
+  memory = "1gb"
+  cpu_kind = "shared"
   cpus = 1
+
+[deploy]
+  strategy = "bluegreen"
+  release_command = "echo 'Release command executed'"

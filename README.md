@@ -2,9 +2,13 @@
 
 A full-stack application that allows users to ask questions to a chatbot based on AI generative models (simulated at backend) and receive responses with an added fact-checking feature.
 
-## Preview
-![Kapture 2025-03-19 at 12 26 40](https://github.com/user-attachments/assets/be4aaa23-cd8b-410f-ae7b-0ccc6da5cdec)
+## Live Demo
 
+https://datapizza-fullstack-test.fly.dev/
+
+## Preview
+
+![Kapture 2025-03-19 at 12 26 40](https://github.com/user-attachments/assets/be4aaa23-cd8b-410f-ae7b-0ccc6da5cdec)
 
 ## Features
 

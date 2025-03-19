@@ -57,7 +57,7 @@ export async function fetchDocuments() {
  * Mock implementation of generate
  */
 export async function generate(
-  prompt: Message,
+  _prompt: Message,
   onChunk?: (chunk: StreamChunk) => void
 ) {
   if (shouldGenerateFail) {

@@ -9,6 +9,7 @@ npm-debug.log
 yarn-debug.log
 yarn-error.log
 frontend/dist
+frontend/node_modules
 frontend/build
 frontend/coverage
 frontend/.env
@@ -42,12 +43,15 @@ htmlcov/
 .venv
 venv/
 ENV/
+backend/__pycache__/
+backend/tests/
 
-# Docker
-.dockerignore
+# Docker files not needed for Fly.io
 docker-compose.yml
 docker-compose.*.yml
-Dockerfile*
+Dockerfile.dev
+frontend/Dockerfile.dev
+backend/Dockerfile.dev
 
 # Editor directories and files
 .idea
@@ -58,5 +62,11 @@ Dockerfile*
 
 # OS specific
 .DS_Store
-Thumbs.db 
+Thumbs.db
 
+# Other
+.benchmarks/
+**/.DS_Store
+**/.gitignore
+**/.pre-commit-config.yaml
+README.md
